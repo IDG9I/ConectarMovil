@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "655567336340",
+    "project_id": "conectarmovil-4c885",
+    "storage_bucket": "conectarmovil-4c885.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655567336340:android:5576be3babc2b060a4d581",
+        "android_client_info": {
+          "package_name": "com.example.conectamvil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNYfwLMj9Ulngmteov3yWbmSP_mn71das"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
