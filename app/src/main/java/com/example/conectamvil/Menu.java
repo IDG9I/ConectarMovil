@@ -45,6 +45,8 @@ public class Menu extends AppCompatActivity {
     private ArrayList<String> userList;
     private static final int REQUEST_CODE_AGREGAR_USUARIO = 1;
 
+    String UsuarioContacto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class Menu extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userList);
         listView.setAdapter(adapter);
 
-
+        /*
         String imagenBase64 = getIntent().getStringExtra("IMAGEN_PERFIL");
 
         if (imagenBase64 != null && !imagenBase64.isEmpty()) {
@@ -69,7 +71,7 @@ public class Menu extends AppCompatActivity {
             imageViewPerfil.setImageBitmap(imagenPerfil);
         }
 
-
+        */
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Usuarios");
         DatabaseReference dbUsuarios = databaseReference.child("Usuarios1");
@@ -120,6 +122,21 @@ public class Menu extends AppCompatActivity {
                 Intent intent = new Intent(Menu.this, ImagenPerfil.class);
                 intent.putExtra("NombreUsuario", IDUsuario);
                 startActivity(intent);
+            }
+        });
+
+
+        listViewUsuarios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Toast.makeText(Menu.this, "Conectando Con: "+ userList.get(position), Toast.LENGTH_LONG).show();
+
+                UsuarioContacto = userList.get(position);
+                Intent intent = new Intent(Menu.this, Chat.class);
+                intent.putExtra("UsuarioContacto", UsuarioContacto);
+                intent.putExtra("IDUsuario", IDUsuario);
+                startActivity(intent);
+
             }
         });
     }
