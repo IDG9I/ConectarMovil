@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.firebase.database.Query;
 
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnIniciar, btnCrear;
     EditText txtContraseñaL, txtUsuarioL;
     DatabaseReference databaseReference;
+    String IDUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     private void buscarUsuario() {
 
         String Usuarioo = txtUsuarioL.getText().toString();
@@ -83,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         if(Contraseña.equals(contraseña)){
 
                             Intent inten = new Intent(MainActivity.this, Menu.class);
+                            inten.putExtra("IDUsuario", Usuarioo);
                             startActivity(inten);
 
                             Toast.makeText(MainActivity.this, "Sesion Iniciada", Toast.LENGTH_SHORT).show();

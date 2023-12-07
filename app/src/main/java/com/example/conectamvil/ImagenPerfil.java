@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
+
 
 public class ImagenPerfil extends AppCompatActivity {
 
@@ -35,6 +38,13 @@ public class ImagenPerfil extends AppCompatActivity {
     String IDUsuario;
     private Bitmap imagenSeleccionada;
     DatabaseReference databaseReference;
+
+    private String convertirImagenABase64(Bitmap imagen) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imagen.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] byteArrayImagen = baos.toByteArray();
+        return Base64.encodeToString(byteArrayImagen, Base64.DEFAULT);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +60,7 @@ public class ImagenPerfil extends AppCompatActivity {
         btnOtraFoto = findViewById(R.id.btnOtraFoto);
         FotoPerfil = findViewById(R.id.FotoPerfil);
         txtUsuarioNombePerfil = findViewById(R.id.txtUsuarioNombePerfil);
-        buscarLuchador();
+        buscarUsuario();
 
         btnOtraFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +74,21 @@ public class ImagenPerfil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ImagenPerfil.this, Menu.class);
+
+                // Convierte la imagen a base64 y pasa la cadena
+                if (imagenSeleccionada != null) {
+                    String imagenBase64 = convertirImagenABase64(imagenSeleccionada);
+                    intent.putExtra("IMAGEN_PERFIL", imagenBase64);
+                }
+
+                intent.putExtra("IDUsuario", IDUsuario);
                 startActivity(intent);
             }
         });
         Log.e("Nombre INICIO", "NOMBRE: " + IDUsuario);
     }
 
-    private void buscarLuchador() {
+    private void buscarUsuario() {
         Log.v("Nombre INICIO", "NOMBRE: " + IDUsuario);
 
         //este si o si porque busca de la base de dato (Usuario) al otro apartado (Usuario1)
@@ -104,6 +122,8 @@ public class ImagenPerfil extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     @Override
