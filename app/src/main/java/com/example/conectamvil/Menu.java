@@ -81,6 +81,7 @@ public class Menu extends AppCompatActivity {
         listViewUsuarios = findViewById(R.id.listView);
         btnVerUsuario = (Button)findViewById(R.id.btnVerUsuario);
 
+        /*
         dbUsuarios.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -103,7 +104,7 @@ public class Menu extends AppCompatActivity {
                 // Manejar errores en la lectura de datos
             }
         });
-
+        */
 
         Bundle extras = getIntent().getExtras();
 

@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.conectamvil.Modelo.Usuarios;
@@ -18,10 +22,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Agregar extends AppCompatActivity {
 
     private EditText editTextNombreUsuario;
     private Button btnAgregarUsuario;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> userList;
+    String SeLContacto;
+    ListView listView;
     DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +39,49 @@ public class Agregar extends AppCompatActivity {
         setContentView(R.layout.activity_agregar);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Usuarios");
+        DatabaseReference dbUsuarios = databaseReference.child("Usuarios1");
 
         editTextNombreUsuario = findViewById(R.id.editTextNombreUsuario);
         btnAgregarUsuario = findViewById(R.id.btnAgregarUsuario);
+
+        listView = findViewById(R.id.ListVview);
+        userList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userList);
+        listView.setAdapter(adapter);
+
+        dbUsuarios.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Limpiar la lista antes de agregar los nuevos usuarios
+                userList.clear();
+
+                // Iterar sobre los nodos hijos (usuarios) en la base de datos
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    // Obtener el nombre del usuario y agregarlo a la lista
+                    String userName = userSnapshot.child("nombreUser").getValue(String.class);
+                    userList.add(userName);
+                }
+
+                // Notificar al adaptador que los datos han cambiado
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Manejar errores en la lectura de datos
+            }
+        });
+
+        //cuando le das click a un nombre de la lista se muestra en el edittext
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                SeLContacto = userList.get(position);
+                editTextNombreUsuario.setText(SeLContacto);
+
+            }
+        });
 
         btnAgregarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
