@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.conectamvil.Modelo.Contactos;
 import com.example.conectamvil.Modelo.Usuarios;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -81,6 +83,9 @@ public class Menu extends AppCompatActivity {
         listViewUsuarios = findViewById(R.id.listView);
         btnVerUsuario = (Button)findViewById(R.id.btnVerUsuario);
 
+        Bundle extras = getIntent().getExtras();
+        IDUsuario = extras.getString("IDUsuario");
+
         /*
         dbUsuarios.addValueEventListener(new ValueEventListener() {
             @Override
@@ -106,9 +111,6 @@ public class Menu extends AppCompatActivity {
         });
         */
 
-        Bundle extras = getIntent().getExtras();
-
-        IDUsuario = extras.getString("IDUsuario");
         btnAgregarUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,9 +157,32 @@ public class Menu extends AppCompatActivity {
 
             // Notifica al adaptador que los datos han cambiado
             adapter.notifyDataSetChanged();
+            //GuardarContactos();
         }
     }
 
+    /*
+    private void GuardarContactos() {
+
+
+
+        //obtener la tabla
+        DatabaseReference dbUsuarios = databaseReference.child("Contacto");
+
+        //crear Usuario
+        Contactos contactos = new Contactos(IDUsuario, userList);
+
+        // Guardar el Usuario en la base de datos de Firebase
+        dbUsuarios.child(IDUsuario).setValue(contactos);
+
+        userList.add(contactos.getContactos().toString());
+
+        // Mostrar un mensaje de éxito
+        Toast.makeText(this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
+
+    }
+
+    */
     // Función para convertir una imagen a cadena Base64
     private String convertirImagenABase64(Bitmap imagen) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
